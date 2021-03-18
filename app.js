@@ -10,7 +10,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"))
 
-mongoose.connect('mongodb://localhost:27017/wikDB', {userNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/wikDB", { useNewUrlParser: true });
 
 const articaleSchema = {
     title: String,
@@ -18,7 +18,19 @@ const articaleSchema = {
 };
 
 const Article = mongoose.model("Article", articaleSchema);
-    app
+
+app.get("/articles", function(req, res){
+    Article.find(function(err, foundArticles){
+        if (!err) {
+            res.send(foundArticles);
+        }else {
+            res.send(err)
+        }
+        
+    })
+})
+
+
 //TODO
 
 app.listen(3000, function(){
